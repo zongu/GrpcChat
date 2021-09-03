@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\Message_Action_ChatMessageAction.proto" />
+    <None Remove="Protos\Message_ChatMessage.proto" />
     <None Remove="Protos\Message_Member.proto" />
     <None Remove="Protos\Service_Bidirectional.proto" />
     <None Remove="Protos\Service_Member.proto" />
@@ -20,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\Message_Action_ChatMessageAction.proto" />
+    <Protobuf Include="Protos\Message_ChatMessage.proto" />
     <Protobuf Include="Protos\Message_Member.proto" />
     <Protobuf Include="Protos\Service_Bidirectional.proto" />
     <Protobuf Include="Protos\Service_Member.proto" />

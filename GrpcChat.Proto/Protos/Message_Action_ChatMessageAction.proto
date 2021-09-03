@@ -1,0 +1,15 @@
+﻿// protobuf版本
+syntax = "proto3";
+
+// protobuf分類
+package GrpcChat.Action;
+
+// 引用參考protobuf對象
+import "Protos/Message_ChatMessage.proto";
+
+// C#裡的命名空間
+option csharp_namespace="NetCoreGrpc.Action";
+
+message ChatMessageAction{
+    GrpcChat.Model.ChatMessage ChatMessage=1;
+}

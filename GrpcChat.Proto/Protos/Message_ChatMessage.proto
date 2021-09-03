@@ -1,0 +1,17 @@
+﻿// protobuf版本
+syntax = "proto3";
+
+// protobuf分類
+package GrpcChat.Model;
+
+// C#裡的命名空間
+option csharp_namespace="NetCoreGrpc.Model";
+
+message ChatMessage{
+    // 暱稱
+    string NickName=1;
+    // 訊息內容
+    string Message=2;
+    // 創建時間
+    int64 CreateDateTimeStamp=3;
+}
