@@ -1,0 +1,37 @@
+﻿// protobuf版本
+syntax = "proto3";
+
+// protobuf分類
+package GrpcChat.Service;
+
+// 引用參考protobuf對象
+import "google/protobuf/empty.proto";
+import "Protos/Message_Member.proto";
+
+// C#裡的命名空間
+option csharp_namespace="GrpcChat.Service";
+
+// grpc服務類
+service MemberService{
+    // 查找資料
+    rpc Find(FindRequest) returns(FindResponse);
+    // 取所有會員資料
+    rpc GetAll(google.protobuf.Empty) returns(GetAllResponse);
+    // 新增會員資料
+    rpc Insert(GrpcChat.Message.Member) returns(GrpcChat.Message.Member);
+}
+
+// 查找請求
+message FindRequest{
+    string Account=1;
+}
+
+// 查找結果
+message FindResponse{
+    GrpcChat.Message.Member Member=1;
+}
+
+// GetAll回傳結果
+message GetAllResponse{
+    repeated GrpcChat.Message.Member Members=1;
+}

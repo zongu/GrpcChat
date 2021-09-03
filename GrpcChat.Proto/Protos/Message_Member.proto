@@ -1,0 +1,20 @@
+﻿// protobuf版本
+syntax = "proto3";
+
+// protobuf分類
+package GrpcChat.Message;
+
+// C#裡的命名空間
+option csharp_namespace="GrpcChat.Model";
+
+// 會員結構
+message Member{
+	// 會員ID
+	string MemberId=1;
+	// 帳號
+	string Account=2;
+	// 會員暱稱
+	string NickName=3;
+	// 資料建立時間
+	int64 CreateDateTimeStamp=4;
+}

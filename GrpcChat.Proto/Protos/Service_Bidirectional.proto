@@ -1,0 +1,23 @@
+﻿// protobuf版本
+syntax = "proto3";
+
+// protobuf分類
+package GrpcChat.Service;
+
+// C#裡的命名空間
+option csharp_namespace="GrpcChat.Service";
+
+// grpc服務類
+service BidirectionalService{
+    // 異步請求
+    rpc ActionAsync(stream ActionModel) returns(stream ActionModel);
+}
+
+message ActionModel{
+    // 指令名稱
+    string Action=1;
+    // 流水號
+    int64 SerialNumber=2;
+    // 指令內容
+    string Content=3;
+}
