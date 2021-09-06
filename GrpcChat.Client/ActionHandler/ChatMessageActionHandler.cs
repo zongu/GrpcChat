@@ -1,13 +1,47 @@
 ﻿
 namespace GrpcChat.Client.ActionHandler
 {
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+    using System;
+    using GrpcChat.Client.Model;
+    using GrpcChat.Domain.Model;
+    using GrpcChat.Service;
+    using NetCoreGrpc.Action;
+    using Newtonsoft.Json;
+    using NLog;
 
-    public class ChatMessageActionHandler
+    public class ChatMessageActionHandler : IActionHandler
     {
+        private ILogger logger;
+
+        private IChatStatus chatStatus;
+
+        public ChatMessageActionHandler(ILogger logger, IChatStatus chatStatus)
+        {
+            this.logger = logger;
+            this.chatStatus = chatStatus;
+        }
+
+        public bool Execute(ActionModel actionModel)
+        {
+            try
+            {
+                if (chatStatus.Online)
+                {
+                    var action = JsonConvert.DeserializeObject<ChatMessageAction>(actionModel.Content);
+                    Console.WriteLine(string.Empty);
+                    Console.WriteLine(
+                        $"{action.ChatMessage.NickName} " +
+                        $"{TimeStampHelper.ToLocalDateTime(action.ChatMessage.CreateDateTimeStamp).ToString("hh:mm:ss")}:" +
+                        $"{action.ChatMessage.Message}");
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex, $"{this.GetType().Name} Execute Exception Content:{actionModel.Content}");
+                return false;
+            }
+        }
     }
 }

@@ -33,6 +33,8 @@ namespace GrpcChat.Client.Model.Command
                 });
 
                 Console.WriteLine(JsonConvert.SerializeObject(findResult));
+                Console.Read();
+                Console.Clear();
 
                 return true;
             }

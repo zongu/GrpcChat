@@ -4,7 +4,9 @@ namespace GrpcChat.Client.Applibs
     using System.Linq;
     using System.Reflection;
     using Autofac;
+    using GrpcChat.Client.GrpcClient;
     using GrpcChat.Client.Model;
+    using GrpcChat.Client.Model.Command;
     using GrpcChat.Service;
     using NLog;
     using NLog.Extensions.Logging;
@@ -49,6 +51,34 @@ namespace GrpcChat.Client.Applibs
 
             builder.RegisterType<BidirectionalService.BidirectionalServiceClient>()
                 .WithParameter("channel", GrpcChannelService.GrpcChannel)
+                .SingleInstance();
+
+            builder.RegisterType<GrpcChatClient>()
+                .As<IGrpcClient>()
+                .SingleInstance();
+
+            builder.RegisterType<GenerateMemberCommand>()
+                .Named<ICommand>("1")
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .SingleInstance();
+
+            builder.RegisterType<FindMemberCommand>()
+                .Named<ICommand>("2")
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .SingleInstance();
+
+            builder.RegisterType<GetAllMemberCommand>()
+                .Named<ICommand>("3")
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .SingleInstance();
+
+            builder.RegisterType<ChatCommand>()
+                .Named<ICommand>("4")
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .SingleInstance();
+
+            builder.RegisterType<ChatStatus>()
+                .As<IChatStatus>()
                 .SingleInstance();
 
             container = builder.Build();

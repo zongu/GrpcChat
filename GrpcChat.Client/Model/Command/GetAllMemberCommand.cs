@@ -2,6 +2,7 @@
 namespace GrpcChat.Client.Model.Command
 {
     using System;
+    using System.Linq;
     using GrpcChat.Service;
     using Newtonsoft.Json;
     using NLog;
@@ -25,7 +26,9 @@ namespace GrpcChat.Client.Model.Command
             try
             {
                 var getResult = this.svc.GetAll(new Google.Protobuf.WellKnownTypes.Empty());
-                Console.WriteLine(JsonConvert.SerializeObject(getResult));
+                Console.WriteLine(string.Join("\r\n", getResult.Members.Select(m => JsonConvert.SerializeObject(m))));
+                Console.Read();
+                Console.Clear();
                 return true;
             }
             catch (Exception ex)

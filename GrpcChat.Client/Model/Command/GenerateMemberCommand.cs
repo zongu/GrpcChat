@@ -39,6 +39,8 @@ namespace GrpcChat.Client.Model.Command
                 });
 
                 Console.WriteLine("Generate Member Success");
+                Console.Read();
+                Console.Clear();
 
                 return true;
             }
