@@ -14,8 +14,6 @@ namespace GrpcChat.Server.Model.Service
 
     public class ClientShip : IClientShip
     {
-        private object _lck;
-
         private ConcurrentDictionary<string, IServerStreamWriter<ActionModel>> dic;
 
         private ILogger<ClientShip> logger;

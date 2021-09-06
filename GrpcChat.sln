@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcChat.Proto", "GrpcChat.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcChat.Domain", "GrpcChat.Domain\GrpcChat.Domain.csproj", "{8166D822-2376-49DF-AEA5-8E2CB1BF8EDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcChat.Domain.Tests", "GrpcChat.Domain.Tests\GrpcChat.Domain.Tests.csproj", "{6EC2047A-DD38-4E46-A397-E098A5521BDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcChat.Domain.Tests", "GrpcChat.Domain.Tests\GrpcChat.Domain.Tests.csproj", "{6EC2047A-DD38-4E46-A397-E098A5521BDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcChat.Client", "GrpcChat.Client\GrpcChat.Client.csproj", "{792C1A96-9C81-46DE-8AC2-2B00037FB669}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6EC2047A-DD38-4E46-A397-E098A5521BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EC2047A-DD38-4E46-A397-E098A5521BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EC2047A-DD38-4E46-A397-E098A5521BDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{792C1A96-9C81-46DE-8AC2-2B00037FB669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{792C1A96-9C81-46DE-8AC2-2B00037FB669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{792C1A96-9C81-46DE-8AC2-2B00037FB669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{792C1A96-9C81-46DE-8AC2-2B00037FB669}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

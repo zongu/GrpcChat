@@ -9,7 +9,7 @@ namespace GrpcChat.Server.Applibs
     {
         private static IConfiguration _config;
 
-        private static IConfiguration config
+        public static IConfiguration Config
         {
             get
             {
@@ -35,21 +35,21 @@ namespace GrpcChat.Server.Applibs
         /// <summary>
         /// mongodb連線字串
         /// </summary>
-        public static readonly string MongoDBConn = config["MongoDBConn"];
+        public static readonly string MongoDBConn = Config["MongoDBConn"];
 
         /// <summary>
         /// Redis前贅詞
         /// </summary>
-        public static readonly string RedisAffixKey = config["RedisAffixKey"];
+        public static readonly string RedisAffixKey = Config["RedisAffixKey"];
 
         /// <summary>
         /// REDIS DB
         /// </summary>
-        public static readonly int RedisDataBase = Convert.ToInt32(config["RedisDataBase"]);
+        public static readonly int RedisDataBase = Convert.ToInt32(Config["RedisDataBase"]);
 
         /// <summary>
         /// Redis連線字串
         /// </summary>
-        public static readonly string RedisConn = config["Redis"];
+        public static readonly string RedisConn = Config["Redis"];
     }
 }

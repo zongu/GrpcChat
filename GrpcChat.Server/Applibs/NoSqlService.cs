@@ -10,7 +10,7 @@ namespace GrpcChat.Server.Applibs
     {
         private static ILogger logger = new LoggerFactory().CreateLogger("NoSqlService");
 
-        private static Lazy<ConnectionMultiplexer> lazyRedisConnections;
+        private static Lazy<ConnectionMultiplexer> lazyRedisConnections = null;
 
         public static ConnectionMultiplexer RedisConnections
         {

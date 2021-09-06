@@ -5,12 +5,16 @@ namespace GrpcChat.Server
     using Autofac;
     using GrpcChat.Domain.Repository;
     using GrpcChat.Server.Applibs;
+    using GrpcChat.Server.Command;
     using GrpcChat.Server.Model;
     using GrpcChat.Server.Model.Service;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+    using NLog;
+    using NLog.Extensions.Logging;
 
     public class Startup
     {
@@ -30,9 +34,12 @@ namespace GrpcChat.Server
             app.UseEndpoints(endpoints =>
             {
                 // 繫結gRPC service
-                //endpoints.MapGrpcService<MemberCommand>();
-                //endpoints.MapGrpcService<BidirectionalCommand>();
+                endpoints.MapGrpcService<MemberCommand>();
+                endpoints.MapGrpcService<BidirectionalCommand>();
             });
+
+            // nlog認appsetting設定
+            NLog.Config.LoggingConfiguration nlogConfig = new NLogLoggingConfiguration(ConfigHelper.Config.GetSection("NLog"));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

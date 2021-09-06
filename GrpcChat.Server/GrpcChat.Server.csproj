@@ -12,6 +12,7 @@
     <PackageReference Include="MongoDB.Driver" Version="2.13.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NLog" Version="4.7.11" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.4" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
   </ItemGroup>
@@ -19,6 +20,12 @@
   <ItemGroup>
     <ProjectReference Include="..\GrpcChat.Domain\GrpcChat.Domain.csproj" />
     <ProjectReference Include="..\GrpcChat.Proto\GrpcChat.Proto.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
