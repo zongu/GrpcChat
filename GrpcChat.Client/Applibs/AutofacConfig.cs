@@ -5,6 +5,9 @@ namespace GrpcChat.Client.Applibs
     using System.Reflection;
     using Autofac;
     using GrpcChat.Client.Model;
+    using GrpcChat.Service;
+    using NLog;
+    using NLog.Extensions.Logging;
 
     internal static class AutofacConfig
     {
@@ -35,7 +38,18 @@ namespace GrpcChat.Client.Applibs
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
                 .SingleInstance();
 
-            //builder.RegisterType<Logfactory>
+            LogManager.Configuration = new NLogLoggingConfiguration(ConfigHelper.Config.GetSection("NLog"));
+            builder.Register<Logger>(p => NLog.Web.NLogBuilder.ConfigureNLog(LogManager.Configuration).GetCurrentClassLogger())
+                .As<ILogger>()
+                .SingleInstance();
+
+            builder.RegisterType<MemberService.MemberServiceClient>()
+                .WithParameter("channel", GrpcChannelService.GrpcChannel)
+                .SingleInstance();
+
+            builder.RegisterType<BidirectionalService.BidirectionalServiceClient>()
+                .WithParameter("channel", GrpcChannelService.GrpcChannel)
+                .SingleInstance();
 
             container = builder.Build();
         }
