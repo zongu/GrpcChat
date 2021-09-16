@@ -2,6 +2,7 @@
 namespace GrpcChat.Client.GrpcClient
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Autofac.Features.Indexed;
     using Grpc.Core;
@@ -19,6 +20,8 @@ namespace GrpcChat.Client.GrpcClient
         private IIndex<string, IActionHandler> handlerSets;
 
         private AsyncDuplexStreamingCall<ActionModel, ActionModel> streamCall;
+
+        private bool finished = false;
 
         public GrpcChatClient(
             ILogger logger,
@@ -45,6 +48,8 @@ namespace GrpcChat.Client.GrpcClient
                     this.logger.Error(ex, $"{this.GetType().Name} EndAsync Exception");
                 }
             }
+
+            this.finished = true;
         }
 
         public async Task SendAction(object action)
@@ -72,24 +77,28 @@ namespace GrpcChat.Client.GrpcClient
 
         public async Task StartAsync()
         {
-            try
+            while (!finished)
             {
-                var headers = new Metadata { new Metadata.Entry("id", Guid.NewGuid().ToString()) };
-                this.streamCall = this.grpcClient.ActionAsync(new CallOptions(headers));
-
-                await foreach (var action in this.streamCall.ResponseStream.ReadAllAsync())
+                try
                 {
-                    if (this.handlerSets.TryGetValue(action.Action.ToLower(), out var handler))
+                    var headers = new Metadata { new Metadata.Entry("id", Guid.NewGuid().ToString()) };
+                    this.streamCall = this.grpcClient.ActionAsync(new CallOptions(headers));
+
+                    await foreach (var action in this.streamCall.ResponseStream.ReadAllAsync())
                     {
-                        this.logger.Trace($"{this.GetType().Name} Call Content:{action.Content}");
-                        handler.Execute(action);
+                        if (this.handlerSets.TryGetValue(action.Action.ToLower(), out var handler))
+                        {
+                            this.logger.Trace($"{this.GetType().Name} Call Content:{action.Content}");
+                            handler.Execute(action);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                this.logger.Error(ex, $"{this.GetType().Name} StartAsync Exception");
-                this.streamCall = null;
+                catch (Exception ex)
+                {
+                    this.logger.Error(ex, $"{this.GetType().Name} StartAsync Exception");
+                    this.streamCall = null;
+                    SpinWait.SpinUntil(() => false, 10000);
+                }
             }
         }
     }

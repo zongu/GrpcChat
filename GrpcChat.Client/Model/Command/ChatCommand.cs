@@ -66,7 +66,7 @@ namespace GrpcChat.Client.Model.Command
                     cmd = Console.ReadLine();
                 }
 
-                this.chatStatus.Online = true;
+                this.chatStatus.Online = false;
                 Console.Read();
                 Console.Clear();
 
