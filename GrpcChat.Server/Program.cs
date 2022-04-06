@@ -1,28 +1,63 @@
-Ôªø
-namespace GrpcChat.Server
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using GrpcChat.Domain.Repository;
+using GrpcChat.Server.Applibs;
+using GrpcChat.Server.Command;
+using GrpcChat.Server.Model;
+using GrpcChat.Server.Model.Service;
+using NLog.Extensions.Logging;
+using NLog.Web;
+using System.Reflection;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// nlog
+builder.Host.UseNLog();
+
+// grpc
+builder.Services.AddGrpc();
+
+// autofac
 {
-    using Autofac.Extensions.DependencyInjection;
-    using GrpcChat.Server.Applibs;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Hosting;
-    using NLog.Web;
+    builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-    class Program
+    builder.Host.ConfigureContainer<ContainerBuilder>(_builder =>
     {
-        static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        var asm = Assembly.GetExecutingAssembly();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .UseUrls(ConfigHelper.ServiceUrl)
-                        .UseStartup<Startup>();
-                })
-                .UseNLog(); // setup nlog di
-    }
+        // ÷∏∂®Ãé¿Ìclient÷∏¡Óµƒhandler
+        _builder.RegisterAssemblyTypes(asm)
+            .Where(t => t.IsAssignableTo<IActionHandler>())
+            .Named<IActionHandler>(t => t.Name.Replace("Handler", string.Empty).ToLower())
+            .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+            .SingleInstance();
+
+        _builder.RegisterType<MemberRepository>()
+            .WithParameter("mongoClient", NoSqlService.MongoConnetion)
+            .As<IMemberRepository>()
+            .SingleInstance();
+
+        _builder.RegisterType<SerialNumberRepository>()
+            .WithParameter("conn", NoSqlService.RedisConnections)
+            .WithParameter("affixKey", NoSqlService.RedisAffixKey)
+            .WithParameter("dataBase", NoSqlService.RedisDataBase)
+            .As<ISerialNumberRepository>()
+            .SingleInstance();
+
+        _builder.RegisterType<ClientShip>()
+            .As<IClientShip>()
+            .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+            .SingleInstance();
+    });
 }
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+app.MapGrpcService<MemberCommand>();
+app.MapGrpcService<BidirectionalCommand>();
+
+// nlog’Jappsetting‘O∂®
+NLog.LogManager.Configuration = new NLogLoggingConfiguration(ConfigHelper.Config.GetSection("NLog"));
+
+app.Run();

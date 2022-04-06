@@ -2,8 +2,8 @@
 namespace GrpcChat.Client.Model.Command
 {
     using System;
+    using System.Text.Json;
     using GrpcChat.Service;
-    using Newtonsoft.Json;
     using NLog;
 
     public class FindMemberCommand : ICommand
@@ -32,7 +32,7 @@ namespace GrpcChat.Client.Model.Command
                     Account = account
                 });
 
-                Console.WriteLine(JsonConvert.SerializeObject(findResult));
+                Console.WriteLine(JsonSerializer.Serialize(findResult));
                 Console.Read();
                 Console.Clear();
 

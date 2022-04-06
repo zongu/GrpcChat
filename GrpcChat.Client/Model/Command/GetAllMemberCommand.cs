@@ -3,8 +3,8 @@ namespace GrpcChat.Client.Model.Command
 {
     using System;
     using System.Linq;
+    using System.Text.Json;
     using GrpcChat.Service;
-    using Newtonsoft.Json;
     using NLog;
 
     public class GetAllMemberCommand : ICommand
@@ -26,7 +26,7 @@ namespace GrpcChat.Client.Model.Command
             try
             {
                 var getResult = this.svc.GetAll(new Google.Protobuf.WellKnownTypes.Empty());
-                Console.WriteLine(string.Join("\r\n", getResult.Members.Select(m => JsonConvert.SerializeObject(m))));
+                Console.WriteLine(string.Join("\r\n", getResult.Members.Select(m => JsonSerializer.Serialize(m))));
                 Console.Read();
                 Console.Clear();
                 return true;

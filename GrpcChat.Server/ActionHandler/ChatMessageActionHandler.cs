@@ -2,12 +2,12 @@
 namespace GrpcChat.Server.ActionHandler
 {
     using System;
+    using System.Text.Json;
     using GrpcChat.Server.Model;
     using GrpcChat.Server.Model.Service;
     using GrpcChat.Service;
     using Microsoft.Extensions.Logging;
     using NetCoreGrpc.Action;
-    using Newtonsoft.Json;
 
     public class ChatMessageActionHandler : IActionHandler
     {
@@ -25,7 +25,13 @@ namespace GrpcChat.Server.ActionHandler
         {
             try
             {
-                var action = JsonConvert.DeserializeObject<ChatMessageAction>(actionModel.Content);
+                var action = JsonSerializer.Deserialize<ChatMessageAction>(actionModel.Content);
+
+                if(action == null)
+                {
+                    throw new Exception("action is null");
+                }
+
                 this.clientShip.Boradcast(action);
                 return true;
             }

@@ -1,16 +1,15 @@
 ﻿
 namespace GrpcChat.Server.Model.Service
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Grpc.Core;
     using GrpcChat.Domain.Repository;
     using GrpcChat.Service;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Linq;
+    using System.Text.Json;
+    using System.Threading.Tasks;
 
     public class ClientShip : IClientShip
     {
@@ -50,12 +49,12 @@ namespace GrpcChat.Server.Model.Service
                                 {
                                     Action = action.GetType().Name,
                                     SerialNumber = snResult.sn,
-                                    Content = JsonConvert.SerializeObject(action)
+                                    Content = JsonSerializer.Serialize(action)
                                 });
                             }
                             catch (Exception ex)
                             {
-                                this.logger.LogError(ex, $"{this.GetType().Name} Broadcast exception id:{obj.Key}, content:{JsonConvert.SerializeObject(action)}");
+                                this.logger.LogError(ex, $"{this.GetType().Name} Broadcast exception id:{obj.Key}, content:{JsonSerializer.Serialize(action)}");
                             }
                         }
                     });
@@ -90,12 +89,12 @@ namespace GrpcChat.Server.Model.Service
                             {
                                 Action = action.GetType().Name,
                                 SerialNumber = snResult.sn,
-                                Content = JsonConvert.SerializeObject(action)
+                                Content = JsonSerializer.Serialize(action)
                             });
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogError(ex, $"{this.GetType().Name} Send exception id:{id}, content:{JsonConvert.SerializeObject(action)}");
+                            this.logger.LogError(ex, $"{this.GetType().Name} Send exception id:{id}, content:{JsonSerializer.Serialize(action)}");
                         }
                     }
                 }

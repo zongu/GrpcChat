@@ -1,0 +1,9 @@
+﻿{
+  "profiles": {
+    "GrpcChat.Server": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false
+    }
+  }
+}

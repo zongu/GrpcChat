@@ -1,15 +1,15 @@
 ﻿
 namespace GrpcChat.Client.GrpcClient
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
     using Autofac.Features.Indexed;
     using Grpc.Core;
     using GrpcChat.Client.Model;
     using GrpcChat.Service;
-    using Newtonsoft.Json;
     using NLog;
+    using System;
+    using System.Text.Json;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class GrpcChatClient : IGrpcClient
     {
@@ -59,7 +59,7 @@ namespace GrpcChat.Client.GrpcClient
                 var request = new ActionModel()
                 {
                     Action = action.GetType().Name,
-                    Content = JsonConvert.SerializeObject(action)
+                    Content = JsonSerializer.Serialize(action)
                 };
 
                 this.logger.Trace($"{this.GetType().Name} Request:{request.Content}");
