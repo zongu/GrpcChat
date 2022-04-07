@@ -3,6 +3,7 @@ namespace GrpcChat.Server.Model.Service
 {
     using Grpc.Core;
     using GrpcChat.Domain.Repository;
+    using GrpcChat.Domain.Scaleout;
     using GrpcChat.Service;
     using Microsoft.Extensions.Logging;
     using System;
@@ -37,7 +38,17 @@ namespace GrpcChat.Server.Model.Service
                     throw snResult.exception;
                 }
 
-                
+                var publishResult = ScaleoutFactory.Publish(new ActionModel()
+                {
+                    Action = action.GetType().Name,
+                    SerialNumber = snResult.sn,
+                    Content = JsonSerializer.Serialize(action)
+                });
+
+                if (publishResult != null)
+                {
+                    throw publishResult;
+                }
             }
             catch (Exception ex)
             {
@@ -57,12 +68,7 @@ namespace GrpcChat.Server.Model.Service
                         {
                             try
                             {
-                                //obj.Value.WriteAsync(new ActionModel()
-                                //{
-                                //    Action = action.GetType().Name,
-                                //    SerialNumber = snResult.sn,
-                                //    Content = JsonSerializer.Serialize(action)
-                                //});
+                                obj.Value.WriteAsync(actionModel);
                             }
                             catch (Exception ex)
                             {

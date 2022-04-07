@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using GrpcChat.Domain.Repository;
+using GrpcChat.Domain.Scaleout;
 using GrpcChat.Server.Applibs;
 using GrpcChat.Server.Command;
 using GrpcChat.Server.Model;
@@ -59,5 +60,19 @@ app.MapGrpcService<BidirectionalCommand>();
 
 // nlog’Jappsetting‘O∂®
 NLog.LogManager.Configuration = new NLogLoggingConfiguration(ConfigHelper.Config.GetSection("NLog"));
+
+// scaleOut
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var clientShip = scope.ServiceProvider.GetRequiredService<IClientShip>();
+
+        ScaleoutFactory.Start(
+            NoSqlService.RedisConnections,
+            NoSqlService.RedisAffixKey,
+            NoSqlService.RedisDataBase,
+            clientShip.BrocastScaleOut);
+    }
+}
 
 app.Run();
