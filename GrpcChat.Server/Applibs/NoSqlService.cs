@@ -2,13 +2,13 @@
 namespace GrpcChat.Server.Applibs
 {
     using System;
-    using Microsoft.Extensions.Logging;
     using MongoDB.Driver;
+    using NLog;
     using StackExchange.Redis;
 
     internal static class NoSqlService
     {
-        private static ILogger logger = new LoggerFactory().CreateLogger("NoSqlService");
+        private static ILogger logger = LogManager.GetCurrentClassLogger();
 
         private static Lazy<ConnectionMultiplexer> lazyRedisConnections = null;
 
@@ -24,11 +24,11 @@ namespace GrpcChat.Server.Applibs
                     var muxer = ConnectionMultiplexer.Connect(options);
                     muxer.ConnectionFailed += (sender, e) =>
                     {
-                        logger.LogError("redis failed: " + EndPointCollection.ToString(e.EndPoint) + "/" + e.ConnectionType);
+                        logger.Error("redis failed: " + EndPointCollection.ToString(e.EndPoint) + "/" + e.ConnectionType);
                     };
                     muxer.ConnectionRestored += (sender, e) =>
                     {
-                        logger.LogError("redis restored: " + EndPointCollection.ToString(e.EndPoint) + "/" + e.ConnectionType);
+                        logger.Error("redis restored: " + EndPointCollection.ToString(e.EndPoint) + "/" + e.ConnectionType);
                     };
 
                     return muxer;
