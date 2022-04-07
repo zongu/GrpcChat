@@ -6,7 +6,9 @@ namespace GrpcChat.Server.Model.Service
 
     public interface IClientShip
     {
-        void Boradcast(object action);
+        void Brocast(object action);
+
+        void BrocastScaleOut(ActionModel actionModel);
 
         void Send(string id, object action);
 

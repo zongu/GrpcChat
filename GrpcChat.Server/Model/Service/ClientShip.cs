@@ -26,7 +26,7 @@ namespace GrpcChat.Server.Model.Service
             this.repo = repo;
         }
 
-        public void Boradcast(object action)
+        public void Brocast(object action)
         {
             try
             {
@@ -37,6 +37,18 @@ namespace GrpcChat.Server.Model.Service
                     throw snResult.exception;
                 }
 
+                
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"{this.GetType().Name} BroadCast Exception");
+            }
+        }
+
+        public void BrocastScaleOut(ActionModel actionModel)
+        {
+            try
+            {
                 var tasks = this.dic.Select(obj =>
                 {
                     return Task.Run(() =>
@@ -45,16 +57,16 @@ namespace GrpcChat.Server.Model.Service
                         {
                             try
                             {
-                                obj.Value.WriteAsync(new ActionModel()
-                                {
-                                    Action = action.GetType().Name,
-                                    SerialNumber = snResult.sn,
-                                    Content = JsonSerializer.Serialize(action)
-                                });
+                                //obj.Value.WriteAsync(new ActionModel()
+                                //{
+                                //    Action = action.GetType().Name,
+                                //    SerialNumber = snResult.sn,
+                                //    Content = JsonSerializer.Serialize(action)
+                                //});
                             }
                             catch (Exception ex)
                             {
-                                this.logger.LogError(ex, $"{this.GetType().Name} Broadcast exception id:{obj.Key}, content:{JsonSerializer.Serialize(action)}");
+                                this.logger.LogError(ex, $"{this.GetType().Name} Broadcast exception id:{obj.Key}, content:{actionModel.Content}");
                             }
                         }
                     });
@@ -64,7 +76,7 @@ namespace GrpcChat.Server.Model.Service
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"{this.GetType().Name} BroadCast Exception");
+                this.logger.LogError(ex, $"{this.GetType().Name} BrocastScaleOut Exception");
             }
         }
 

@@ -32,7 +32,7 @@ namespace GrpcChat.Server.ActionHandler
                     throw new Exception("action is null");
                 }
 
-                this.clientShip.Boradcast(action);
+                this.clientShip.Brocast(action);
                 return true;
             }
             catch (Exception ex)
