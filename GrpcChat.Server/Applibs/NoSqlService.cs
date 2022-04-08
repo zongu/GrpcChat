@@ -10,7 +10,7 @@ namespace GrpcChat.Server.Applibs
     {
         private static ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private static Lazy<ConnectionMultiplexer> lazyRedisConnections = null;
+        private static Lazy<ConnectionMultiplexer> lazyRedisConnections;
 
         public static ConnectionMultiplexer RedisConnections
         {
