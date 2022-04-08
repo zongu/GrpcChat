@@ -18,6 +18,9 @@ builder.Host.UseNLog();
 // grpc
 builder.Services.AddGrpc();
 
+// listen url
+builder.WebHost.UseUrls(ConfigHelper.ServiceUrl);
+
 // autofac
 {
     builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());

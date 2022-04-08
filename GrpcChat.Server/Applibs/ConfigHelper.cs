@@ -30,7 +30,7 @@ namespace GrpcChat.Server.Applibs
         /// <summary>
         /// 服務位址 (gRPC要有TLS)
         /// </summary>
-        public static readonly string ServiceUrl = @"https://*:8085";
+        public static readonly string ServiceUrl = $"https://*:8085";
 
         /// <summary>
         /// mongodb連線字串

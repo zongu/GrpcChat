@@ -16,7 +16,12 @@ namespace GrpcChat.Client.Applibs
                 {
                     lazyGrpcChannel = new Lazy<GrpcChannel>(() =>
                     {
-                        return GrpcChannel.ForAddress(ConfigHelper.GrpcServiceUrl);
+                        var httpHandler = new HttpClientHandler();
+                        // Return `true` to allow certificates that are untrusted/invalid
+                        httpHandler.ServerCertificateCustomValidationCallback =
+                            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
+                        return GrpcChannel.ForAddress(ConfigHelper.GrpcServiceUrl, new GrpcChannelOptions { HttpHandler = httpHandler });
                     });
                 }
 
