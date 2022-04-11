@@ -15,6 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 // nlog
 builder.Host.UseNLog();
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    // http/2 listen specify port with tls
+    options.ListenAnyIP(ConfigHelper.ServicePort, o => o.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2);
+});
+
 // grpc
 builder.Services.AddGrpc();
 

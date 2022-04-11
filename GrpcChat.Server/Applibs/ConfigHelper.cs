@@ -28,9 +28,14 @@ namespace GrpcChat.Server.Applibs
         }
 
         /// <summary>
-        /// 服務位址 (gRPC要有TLS)
+        /// 服務PORT
         /// </summary>
-        public static readonly string ServiceUrl = $"https://*:8085";
+        public static readonly int ServicePort = 8085;
+
+        /// <summary>
+        /// 服務位址
+        /// </summary>
+        public static readonly string ServiceUrl = $"http://*:{ServicePort}";
 
         /// <summary>
         /// mongodb連線字串
