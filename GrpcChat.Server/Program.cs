@@ -62,6 +62,8 @@ builder.WebHost.UseUrls(ConfigHelper.ServiceUrl);
 }
 
 var app = builder.Build();
+// generate service provider
+ConfigHelper.ServiceProvider = app.Services;
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<MemberCommand>();
@@ -72,16 +74,13 @@ NLog.LogManager.Configuration = new NLogLoggingConfiguration(ConfigHelper.Config
 
 // scaleOut
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var clientShip = scope.ServiceProvider.GetRequiredService<IClientShip>();
+    var clientShip = ConfigHelper.ServiceProvider.GetRequiredService<IClientShip>();
 
-        ScaleoutFactory.Start(
-            NoSqlService.RedisConnections,
-            NoSqlService.RedisAffixKey,
-            NoSqlService.RedisDataBase,
-            clientShip.BrocastScaleOut);
-    }
+    ScaleoutFactory.Start(
+        NoSqlService.RedisConnections,
+        NoSqlService.RedisAffixKey,
+        NoSqlService.RedisDataBase,
+        clientShip.BrocastScaleOut);
 }
 
 app.Run();

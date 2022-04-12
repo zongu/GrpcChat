@@ -27,6 +27,8 @@ namespace GrpcChat.Server.Applibs
             }
         }
 
+        public static IServiceProvider ServiceProvider;
+
         /// <summary>
         /// 服務PORT
         /// </summary>
