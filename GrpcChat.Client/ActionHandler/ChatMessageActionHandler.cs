@@ -2,7 +2,7 @@
 namespace GrpcChat.Client.ActionHandler
 {
     using System;
-    using System.Text.Json;
+    using System.IO;
     using GrpcChat.Client.Model;
     using GrpcChat.Domain.Model;
     using GrpcChat.Service;
@@ -27,7 +27,7 @@ namespace GrpcChat.Client.ActionHandler
             {
                 if (chatStatus.Online)
                 {
-                    var action = JsonSerializer.Deserialize<ChatMessageAction>(actionModel.Content);
+                    var action = ChatMessageAction.Parser.ParseFrom(actionModel.Content);
                     Console.WriteLine(string.Empty);
                     Console.WriteLine(
                         $"{action.ChatMessage.NickName} " +

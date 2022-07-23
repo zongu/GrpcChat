@@ -2,6 +2,7 @@
 namespace GrpcChat.Client.GrpcClient
 {
     using Autofac.Features.Indexed;
+    using Google.Protobuf;
     using Grpc.Core;
     using GrpcChat.Client.Model;
     using GrpcChat.Service;
@@ -10,6 +11,7 @@ namespace GrpcChat.Client.GrpcClient
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
+    
 
     public class GrpcChatClient : IGrpcClient
     {
@@ -52,14 +54,14 @@ namespace GrpcChat.Client.GrpcClient
             this.finished = true;
         }
 
-        public async Task SendAction(object action)
+        public async Task SendAction(IMessage action) 
         {
             if (this.streamCall != null)
             {
                 var request = new ActionModel()
                 {
                     Action = action.GetType().Name,
-                    Content = JsonSerializer.Serialize(action)
+                    Content = action.ToByteString()
                 };
 
                 this.logger.Trace($"{this.GetType().Name} Request:{request.Content}");

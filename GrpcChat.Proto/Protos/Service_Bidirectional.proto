@@ -19,5 +19,5 @@ message ActionModel{
     // 流水號
     int64 SerialNumber=2;
     // 指令內容
-    string Content=3;
+    bytes Content=3;
 }

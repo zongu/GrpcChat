@@ -3,6 +3,7 @@ namespace GrpcChat.Domain.Scaleout
 {
     using System;
     using System.Text.Json;
+    using Google.Protobuf;
     using GrpcChat.Service;
     using StackExchange.Redis;
 
@@ -43,7 +44,7 @@ namespace GrpcChat.Domain.Scaleout
             {
                 redisSubscriber.Subscribe($"{_affixKey}:Scaleout", (topic, message) =>
                 {
-                    var actionModel = JsonSerializer.Deserialize<ActionModel>(message.ToString());
+                    var actionModel = ActionModel.Parser.ParseFrom(message);
 
                     if (actionModel != null)
                     {
@@ -73,7 +74,11 @@ namespace GrpcChat.Domain.Scaleout
                     throw new Exception("RedisSubscriber is null");
                 }
 
-                redisSubscriber.Publish($"{_affixKey}:Scaleout", JsonSerializer.Serialize(actionModel));
+                using (var ms =  new MemoryStream())
+                {
+                    actionModel.WriteTo(ms);
+                    redisSubscriber.Publish($"{_affixKey}:Scaleout", ms.ToArray());
+                }   
 
                 return null;
             }

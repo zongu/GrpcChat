@@ -25,9 +25,9 @@ namespace GrpcChat.Server.ActionHandler
         {
             try
             {
-                var action = JsonSerializer.Deserialize<ChatMessageAction>(actionModel.Content);
+                var action = ChatMessageAction.Parser.ParseFrom(actionModel.Content);
 
-                if(action == null)
+                if (action == null)
                 {
                     throw new Exception("action is null");
                 }

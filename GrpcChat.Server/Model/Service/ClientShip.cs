@@ -1,16 +1,17 @@
 ﻿
 namespace GrpcChat.Server.Model.Service
 {
-    using Grpc.Core;
-    using GrpcChat.Domain.Repository;
-    using GrpcChat.Domain.Scaleout;
-    using GrpcChat.Service;
-    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Concurrent;
     using System.Linq;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using Google.Protobuf;
+    using Grpc.Core;
+    using GrpcChat.Domain.Repository;
+    using GrpcChat.Domain.Scaleout;
+    using GrpcChat.Service;
+    using Microsoft.Extensions.Logging;
 
     public class ClientShip : IClientShip
     {
@@ -27,7 +28,7 @@ namespace GrpcChat.Server.Model.Service
             this.repo = repo;
         }
 
-        public void Brocast(object action)
+        public void Brocast(IMessage action)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace GrpcChat.Server.Model.Service
                 {
                     Action = action.GetType().Name,
                     SerialNumber = snResult.sn,
-                    Content = JsonSerializer.Serialize(action)
+                    Content = action.ToByteString()
                 });
 
                 if (publishResult != null)
@@ -86,7 +87,7 @@ namespace GrpcChat.Server.Model.Service
             }
         }
 
-        public void Send(string id, object action)
+        public void Send(string id, IMessage action)
         {
             try
             {
@@ -107,7 +108,7 @@ namespace GrpcChat.Server.Model.Service
                             {
                                 Action = action.GetType().Name,
                                 SerialNumber = snResult.sn,
-                                Content = JsonSerializer.Serialize(action)
+                                Content = action.ToByteString()
                             });
                         }
                         catch (Exception ex)

@@ -2,13 +2,13 @@
 namespace GrpcChat.Client.GrpcClient
 {
     using System.Threading.Tasks;
-    using Grpc.Core;
+    using Google.Protobuf;
 
     public interface IGrpcClient
     {
         Task EndAsync();
 
-        Task SendAction(object action);
+        Task SendAction(IMessage action);
 
         Task StartAsync();
     }
