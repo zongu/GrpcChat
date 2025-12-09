@@ -1,0 +1,57 @@
+syntax = "proto3";
+package GrpcChat.Service;
+option csharp_namespace="GrpcChat.Service";
+
+// 檔案傳輸服務
+service FileTransferService {
+    // Server Stream RPC - 檔案下載
+    rpc DownloadFile(DownloadRequest) returns (stream FileChunk);
+    
+    // Client Stream RPC - 檔案上傳
+    rpc UploadFile(stream FileChunk) returns (UploadStatus);
+    
+    // 查詢上傳進度 (斷線續傳用)
+    rpc GetUploadProgress(ResumeUploadRequest) returns (UploadProgress);
+}
+
+// 檔案分塊資料
+message FileChunk {
+    string FileId = 1;               // 檔案唯一識別碼 (UUID)
+    string FileName = 2;             // 原始檔名
+    bytes ChunkData = 3;             // 分塊資料
+    int64 Offset = 4;                // 偏移量 (bytes)
+    int64 TotalSize = 5;             // 檔案總大小 (bytes)
+    bool IsCompleted = 6;            // 是否為最後一塊
+    string Checksum = 7;             // MD5 校驗碼
+    string MimeType = 8;             // MIME 類型 (image/png, image/jpeg 等)
+}
+
+// 下載請求
+message DownloadRequest {
+    string FileId = 1;               // 檔案 ID
+    int64 Offset = 2;                // 起始偏移量 (斷線續傳用，預設 0)
+}
+
+// 上傳狀態回應
+message UploadStatus {
+    bool Success = 1;                // 是否成功
+    string FileId = 2;               // 檔案 ID
+    string ErrorMessage = 3;         // 錯誤訊息
+    int64 BytesReceived = 4;         // 已接收位元組數
+    string Checksum = 5;             // MD5 校驗碼
+}
+
+// 斷線續傳請求
+message ResumeUploadRequest {
+    string FileId = 1;               // 檔案 ID
+}
+
+// 上傳進度回應
+message UploadProgress {
+    string FileId = 1;               // 檔案 ID
+    string FileName = 2;             // 原始檔名
+    int64 BytesReceived = 3;         // 已接收位元組數
+    int64 TotalSize = 4;             // 檔案總大小
+    string Status = 5;               // 狀態 (uploading, completed, failed)
+    string Checksum = 6;             // MD5 校驗碼
+}
