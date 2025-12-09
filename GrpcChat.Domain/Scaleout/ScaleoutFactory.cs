@@ -9,13 +9,13 @@ namespace GrpcChat.Domain.Scaleout
 
     public static class ScaleoutFactory
     {
-        private static string _affixKey;
+        private static string _affixKey = string.Empty;
 
         private static int _dataBase;
 
-        private static ConnectionMultiplexer redisConn;
+        private static ConnectionMultiplexer? redisConn;
 
-        private static ISubscriber redisSubscriber
+        private static ISubscriber? redisSubscriber
         {
             get
             {

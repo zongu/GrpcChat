@@ -13,7 +13,7 @@ namespace GrpcChat.Client.Applibs
 
     internal static class AutofacConfig
     {
-        private static IContainer container;
+        private static IContainer? container;
 
         public static IContainer Container
         {
@@ -53,8 +53,16 @@ namespace GrpcChat.Client.Applibs
                 .WithParameter("channel", GrpcChannelService.GrpcChannel)
                 .SingleInstance();
 
+            builder.RegisterType<FileTransferService.FileTransferServiceClient>()
+                .WithParameter("channel", GrpcChannelService.GrpcChannel)
+                .SingleInstance();
+
             builder.RegisterType<GrpcChatClient>()
                 .As<IGrpcClient>()
+                .SingleInstance();
+
+            builder.RegisterType<FileTransferClient>()
+                .As<IFileTransferClient>()
                 .SingleInstance();
 
             builder.RegisterType<GenerateMemberCommand>()
@@ -74,6 +82,16 @@ namespace GrpcChat.Client.Applibs
 
             builder.RegisterType<ChatCommand>()
                 .Named<ICommand>("4")
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .SingleInstance();
+
+            builder.RegisterType<UploadFileCommand>()
+                .Named<ICommand>("5")
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .SingleInstance();
+
+            builder.RegisterType<DownloadFileCommand>()
+                .Named<ICommand>("6")
                 .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
                 .SingleInstance();
 

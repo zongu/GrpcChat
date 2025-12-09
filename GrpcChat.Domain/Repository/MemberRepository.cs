@@ -36,7 +36,7 @@ namespace GrpcChat.Domain.Repository
         }
 
 
-        public (Exception exception, Member member) Find(string account)
+        public (Exception? exception, Member? member) Find(string account)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace GrpcChat.Domain.Repository
             }
         }
 
-        public (Exception exception, IEnumerable<Member> members) GetAll()
+        public (Exception? exception, IEnumerable<Member>? members) GetAll()
         {
             try
             {
@@ -64,7 +64,7 @@ namespace GrpcChat.Domain.Repository
             }
         }
 
-        public Exception Insert(Member member)
+        public Exception? Insert(Member member)
         {
             try
             {

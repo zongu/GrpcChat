@@ -10,7 +10,7 @@ namespace GrpcChat.Domain.Tests.Repository
     [TestClass]
     public class SerialNumberRepositoryTests
     {
-        private ISerialNumberRepository repo;
+        private ISerialNumberRepository? repo;
 
         const string redisConn = @"localhost:6379";
 
@@ -32,7 +32,7 @@ namespace GrpcChat.Domain.Tests.Repository
         [TestMethod]
         public void 取流水號測試()
         {
-            var getResult = this.repo.GetSerialNumber();
+            var getResult = this.repo!.GetSerialNumber();
 
             Assert.IsNull(getResult.exception);
             Assert.AreEqual(getResult.sn, 1);

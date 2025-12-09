@@ -6,7 +6,7 @@ namespace GrpcChat.Client.Applibs
 
     internal static class ConfigHelper
     {
-        private static IConfiguration _config;
+        private static IConfiguration? _config;
 
         public static IConfiguration Config
         {

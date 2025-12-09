@@ -7,10 +7,10 @@ namespace GrpcChat.Domain.Repository
 
     public interface IMemberRepository
     {
-        (Exception exception, Member member) Find(string account);
+        (Exception? exception, Member? member) Find(string account);
 
-        (Exception exception, IEnumerable<Member> members) GetAll();
+        (Exception? exception, IEnumerable<Member>? members) GetAll();
 
-        Exception Insert(Member member);
+        Exception? Insert(Member member);
     }
 }

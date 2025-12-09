@@ -10,7 +10,7 @@ namespace GrpcChat.Server.Applibs
     {
         private static ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private static Lazy<ConnectionMultiplexer> lazyRedisConnections;
+        private static Lazy<ConnectionMultiplexer>? lazyRedisConnections;
 
         public static ConnectionMultiplexer RedisConnections
         {
@@ -54,7 +54,7 @@ namespace GrpcChat.Server.Applibs
             }
         }
 
-        private static Lazy<MongoClient> lazyMongoConnetion;
+        private static Lazy<MongoClient>? lazyMongoConnetion;
 
         public static MongoClient MongoConnetion
         {

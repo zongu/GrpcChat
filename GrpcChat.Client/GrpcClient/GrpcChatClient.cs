@@ -21,7 +21,7 @@ namespace GrpcChat.Client.GrpcClient
 
         private IIndex<string, IActionHandler> handlerSets;
 
-        private AsyncDuplexStreamingCall<ActionModel, ActionModel> streamCall;
+        private AsyncDuplexStreamingCall<ActionModel, ActionModel>? streamCall;
 
         private bool finished = false;
 

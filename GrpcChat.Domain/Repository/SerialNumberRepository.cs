@@ -20,7 +20,7 @@ namespace GrpcChat.Domain.Repository
             this.dataBase = dataBase;
         }
 
-        public (Exception exception, long sn) GetSerialNumber()
+        public (Exception? exception, long sn) GetSerialNumber()
         {
             try
             {

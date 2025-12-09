@@ -6,7 +6,7 @@ namespace GrpcChat.Client.Applibs
 
     internal static class GrpcChannelService
     {
-        private static Lazy<GrpcChannel> lazyGrpcChannel;
+        private static Lazy<GrpcChannel>? lazyGrpcChannel;
 
         public static GrpcChannel GrpcChannel
         {

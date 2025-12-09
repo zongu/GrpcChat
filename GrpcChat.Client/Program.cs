@@ -22,7 +22,7 @@ namespace GrpcChat.Client
                 {
                     var cmd = string.Empty;
 
-                    while (cmd.ToLower() != "5")
+                    while (cmd.ToLower() != "7")
                     {
                         Console.Clear();
 
@@ -32,6 +32,8 @@ namespace GrpcChat.Client
                             case "2":
                             case "3":
                             case "4":
+                            case "5":
+                            case "6":
                                 var commander = scope.ResolveNamed<ICommand>(cmd);
                                 commander.Execute();
                                 break;
@@ -43,7 +45,9 @@ namespace GrpcChat.Client
                         Console.WriteLine("2. Find Member");
                         Console.WriteLine("3. Get All Member");
                         Console.WriteLine("4. Let`s Chat");
-                        Console.WriteLine("5. Exist");
+                        Console.WriteLine("5. Upload File");
+                        Console.WriteLine("6. Download File");
+                        Console.WriteLine("7. Exit");
                         cmd = Console.ReadLine();
                     }
                 }

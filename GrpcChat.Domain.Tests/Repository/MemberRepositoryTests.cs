@@ -14,7 +14,7 @@ namespace GrpcChat.Domain.Tests.Repository
     {
         const string mongoConn = @"mongodb://localhost:27017";
 
-        private IMemberRepository repo;
+        private IMemberRepository? repo;
 
         [TestInitialize]
         public void Init()
@@ -27,7 +27,7 @@ namespace GrpcChat.Domain.Tests.Repository
         }
 
         [TestMethod]
-        public void ĞÂÔöÙYÁÏœyÔ‡()
+        public void æ–°å¢è³‡æ–™æ¸¬è©¦()
         {
             var insertResult = this.repo.Insert(new Member()
             {
@@ -41,7 +41,7 @@ namespace GrpcChat.Domain.Tests.Repository
         }
 
         [TestMethod]
-        public void ²éÕÒÖ¸¶¨IDÙYÁÏœyÔ‡()
+        public void æŸ¥æ‰¾æŒ‡å®šIDè³‡æ–™æ¸¬è©¦()
         {
             var insertResult = this.repo.Insert(new Member()
             {
@@ -66,7 +66,7 @@ namespace GrpcChat.Domain.Tests.Repository
         }
 
         [TestMethod]
-        public void È¡µÃËùÓĞÙYÁÏœyÔ‡()
+        public void å–å¾—æ‰€æœ‰è³‡æ–™æ¸¬è©¦()
         {
             var insertResult = this.repo.Insert(new Member()
             {

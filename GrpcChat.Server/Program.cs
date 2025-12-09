@@ -36,7 +36,7 @@ builder.WebHost.UseUrls(ConfigHelper.ServiceUrl);
     {
         var asm = Assembly.GetExecutingAssembly();
 
-        // 指定處理client指令的handler
+        // 指锟斤拷處锟斤拷client指锟斤拷锟絟andler
         _builder.RegisterAssemblyTypes(asm)
             .Where(t => t.IsAssignableTo<IActionHandler>())
             .Named<IActionHandler>(t => t.Name.Replace("Handler", string.Empty).ToLower())
@@ -59,6 +59,15 @@ builder.WebHost.UseUrls(ConfigHelper.ServiceUrl);
             .As<IClientShip>()
             .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
             .SingleInstance();
+
+        // FileTransfer 鏈嶅嫏
+        _builder.RegisterType<FileStorageService>()
+            .As<IFileStorageService>()
+            .SingleInstance();
+
+        _builder.RegisterType<UploadProgressTracker>()
+            .As<IUploadProgressTracker>()
+            .SingleInstance();
     });
 }
 
@@ -67,8 +76,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.MapGrpcService<MemberCommand>();
 app.MapGrpcService<BidirectionalCommand>();
+app.MapGrpcService<FileTransferCommand>();
 
-// nlog認appsetting設定
+// nlog锟絁appsetting锟絆锟斤拷
 NLog.LogManager.Configuration = new NLogLoggingConfiguration(ConfigHelper.Config.GetSection("NLog"));
 
 // scaleOut

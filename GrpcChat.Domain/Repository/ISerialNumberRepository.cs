@@ -5,6 +5,6 @@ namespace GrpcChat.Domain.Repository
 
     public interface ISerialNumberRepository
     {
-        (Exception exception, long sn) GetSerialNumber();
+        (Exception? exception, long sn) GetSerialNumber();
     }
 }

@@ -21,6 +21,7 @@
 		<Protobuf Include="Protos\Message_Member.proto" />
 		<Protobuf Include="Protos\Service_Bidirectional.proto" />
 		<Protobuf Include="Protos\Service_Member.proto" />
+		<Protobuf Include="Protos\Service_FileTransfer.proto" />
 	</ItemGroup>
 
 </Project>
